@@ -1,0 +1,33 @@
+# Python
+.venv/
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Java et Spark
+.java/
+spark-warehouse/
+derby.log/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs et fichiers temporaires
+*.log
+logs/
+tmp/
+temp/
+
+# IDE et système
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/

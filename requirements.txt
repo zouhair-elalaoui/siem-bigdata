@@ -1,0 +1,13 @@
+# SIEM Big Data project — Python dependencies
+# Recommended: Python 3.11 or 3.12, with Java 17 installed separately.
+# Kafka, MongoDB, Elasticsearch, Kibana and the Spark master are managed by Docker Compose.
+# They are infrastructure services and are NOT installed by pip.
+
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.5.2
+xgboost==2.1.1
+pyspark==3.5.0
+kafka-python==2.0.2
+elasticsearch==8.13.0
+pymongo==4.8.0
