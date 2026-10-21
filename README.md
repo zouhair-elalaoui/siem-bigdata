@@ -57,14 +57,15 @@ Among the evaluated models, XGBoost achieved the strongest reported results, wit
 - **Deployment and services:** Docker and Docker Compose
 
 ## Execution
-
-Follow the [**Execution_Guide**](Execution_Guide.md) to configure the environment and run the platform.
-
 **Prerequisites**
 - Python 3.11
 - Java 17
 - Docker and Docker Compose
 - `uv` for Python environment and dependency management
+- 
+Follow the [**Execution_Guide**](Execution_Guide.md) to configure the environment and run the platform.
+
+
 
 > **Important:** Keep the existing execution commands and terminal-by-terminal instructions in this section. They cover environment setup, service startup, data quality checks, Elasticsearch configuration, Spark streaming, and the Kafka producer. Follow the execution order specified in the existing instructions.
 
