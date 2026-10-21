@@ -58,10 +58,11 @@ Among the evaluated models, XGBoost achieved the strongest reported results, wit
 
 ## Execution
 **Prerequisites**
+- Ubuntu
+- `uv` for Python environment and dependency management
 - Python 3.11
 - Java 17
 - Docker and Docker Compose
-- `uv` for Python environment and dependency management
   
 Follow the [**Execution_Guide**](Execution_Guide.md) to configure the environment and run the platform.
 
