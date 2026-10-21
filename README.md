@@ -1,168 +1,92 @@
-# Les commandes à executer en ordre pour avoir une compatibilité avec le projet
-```bash
+# Real-Time SIEM Platform for Network Anomaly Detection
 
-sudo apt update
-sudo apt install -y git docker.io docker-compose-v2
+## Project Overview
 
-sudo systemctl start docker
-sudo systemctl enable docker
+This project implements a **Security Information and Event Management (SIEM) platform** designed to detect network intrusions and analyze potential security threats in real time using Big Data technologies and machine learning.
 
-sudo usermod -aG docker $USER
+The platform processes network traffic streams, identifies suspicious activity, and generates alerts that can be monitored and analyzed through a centralized architecture.
 
-git --version
-docker --version
-docker compose version
+## How It Works
 
-cd ~/projet-siem-bigdata-F
+The platform combines distributed stream processing, machine learning, and data storage to build a real-time threat detection pipeline.
 
-sudo apt update
-sudo apt install -y python3.13-venv python3.13-full
+1. **Data ingestion — Apache Kafka**  
+   Kafka receives and distributes network traffic data through streaming topics.
 
-python3 -m venv venv
-source venv/bin/activate
+2. **Stream processing — Apache Spark Structured Streaming**  
+   Spark processes incoming data streams and prepares network flow records for analysis.
 
-sudo apt update
-sudo apt install -y python3-pip
+3. **Machine learning — Ensemble-based detection**  
+   Four models analyze network activity:
+   - Random Forest
+   - Isolation Forest
+   - Multilayer Perceptron (MLP)
+   - XGBoost
 
-python3 -m pip install --upgrade pip setuptools wheel --break-system-packages
+   Their predictions are combined using a majority-voting strategy to support the detection of potentially malicious traffic and anomalous behavior.
 
-pip3 install pyspark==3.5.0
-python3 -c "import pyspark; print(pyspark.__version__)"
+4. **Alerting and visualization — Elasticsearch and Kibana**  
+   Detected threats are sent to Elasticsearch for indexing and can be explored through Kibana dashboards.
 
-sudo apt update
-sudo apt install -y default-jdk
+5. **Data storage — MongoDB**  
+   MongoDB stores raw log data for further investigation and analysis.
 
-echo 'export JAVA_HOME=/usr/lib/jvm/default-java' >> ~/.bashrc
-echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
-source ~/.bashrc
+## Results and Performance
 
-java -version
-echo $JAVA_HOME
+The machine learning models were evaluated using the **UNSW-NB15** dataset.
 
-pip install --upgrade pip
+| Metric | Result |
+|---|---:|
+| XGBoost F1-score | 0.9165 |
+| XGBoost ROC-AUC | 0.9836 |
+| XGBoost inference latency | 0.0029 ms/sample |
+| Network flows in the test set | 82,332 |
+| SSH log records | 2,000 |
 
-pip install kafka-python pyspark pandas numpy scikit-learn xgboost tensorflow elasticsearch pymongo paramiko requests matplotlib joblib
+Among the evaluated models, XGBoost achieved the strongest reported results, with an F1-score of **0.9165** and an ROC-AUC of **0.9836**. These results indicate strong classification performance on the evaluated dataset; they do not, by themselves, guarantee the same performance in a production network environment.
 
-pip3 install kaggle --break-system-packages
+## Technology Stack
 
-newgrp docker
+- **Programming:** Python
+- **Stream ingestion:** Apache Kafka
+- **Stream processing:** Apache Spark Structured Streaming
+- **Machine learning:** Scikit-learn, XGBoost, MLP Neural Network
+- **Search and alert indexing:** Elasticsearch
+- **Visualization:** Kibana
+- **Log storage:** MongoDB
+- **Deployment and services:** Docker and Docker Compose
 
-docker compose up -d
+## Execution
 
-docker compose ps
-docker compose up -d kafka
-sleep 60
-docker compose ps
+Follow the [**Execution_Guide**](Execution_Guide.md) to configure the environment and run the platform.
 
-python3 kafka_config.py
+**Prerequisites**
+- Python 3.11
+- Java 17
+- Docker and Docker Compose
+- `uv` for Python environment and dependency management
 
-pip install elasticsearch==8.13.0 --break-system-packages
-python3 elasticsearch_config.py
-python3 mongodb_config.py
-python3 data_quality.py --data-dir ./data
+> **Important:** Keep the existing execution commands and terminal-by-terminal instructions in this section. They cover environment setup, service startup, data quality checks, Elasticsearch configuration, Spark streaming, and the Kafka producer. Follow the execution order specified in the existing instructions.
 
-```
+## Project Team
 
-# POUR TESTER LE PROJET POUR LA PREMIÈRE FOIS
+Developed as an academic Big Data and Artificial Intelligence project at the **National School of Applied Sciences of Tetouan (ENSA Tetouan), Morocco**.
 
-```bash
+**Team members**
+- SOULAMA Doubie Judicael Noé
+- EL ALAOUI SALEH Zouhair
+- PROBI Nouhaila
+- EL JABRI Hafsa
+- SIMBRE Achraf
 
-newgrp docker
-docker compose up -d
+**Supervisor:** Pr. SASSI Imad
 
-docker compose up -d kafka
-sleep 60
-docker compose ps
+**Academic year:** 2025–2026
 
+## Full Project Report
 
-cd spark_ml
-source venv/bin/activate
+For the complete academic report, including the methodology, architecture, implementation details, and extended evaluation, see:
 
-python3 preprocessing.py
-python3 train_random_forest.py
-python3 train_isolation_forest.py
-python3 train_neural_network.py
-python3 train_xgboost.py
-python3 evaluate_models.py
-```
-
-```bash
-
-cd spark_ml
-source venv/bin/activate
-python3 elasticsearch_sender.py
-```
-
-SI le ficher marche et s'arrete sans message erreur donc cela marche, alors ouvre un nouveau terminal et fait :
-
-```bash
-
-cd ~/projet-siem-bigdata-F
-source venv/bin/activate
-python3 producer.py
-```
-Si le fichier commence l'execution retourne vers l'autre terminal, apres quelque min tu vas voir les données s'affichent et classées.
-cela peut prendre 20min.
-
-# RMQ : POUR RÉINITIALISER LES BASE DE DONNÉE
-## Pour elastic
-```bash
-curl -X DELETE "http://localhost:9200/alertes-securite"
-curl -X DELETE "http://localhost:9200/siem-alertes"
-curl -X DELETE "http://localhost:9200/siem-window-stats"
-```
-## Pour Mongodb
-```bash
-docker exec -it projet-siem-bigdata-f-mongodb-1 mongo
-```
-dans l'interface de MONGOdb :
-
-```bash
-
-use siem_db
-
-show collections
-
-db.logs_bruts.deleteMany({})
-
-db.alertes.deleteMany({})
-```
-
-# SI N'EST PAS LA PREMIÈRE FOIS :
-même étapes juste on n'éxecute pas l'entrainement des modèles.
-
-# CONSULTER MONGODB
-```bash
-docker exec -it projet-siem-bigdata-f-mongodb-1 mongo
-```
-dans l'interface de MONGOdb :
-
-```bash
-
-use siem_db
-
-show collections
-
-db.logs_bruts.countDocuments({})
-
-db.alertes.countDocuments({})
-```
-
-# VOIR LES DASHBOARDS SUR ELASTIC
-Elasticsearch : http://localhost:9200⁠
-1- Ouvre Kibana
-2- Stack management>Data views>créer data views
-3- Name : SIEM Alertes
-   Index pattern : siem-alertes
-4- save
-5- Va dans Stack Management → Saved Objects
-6- Clique sur Import
-7- Sélectionne "Dashboards.ndjson"
-
-
-
-# LES AUTRES LOCAL HOSTS
-Kibana : http://localhost:5601⁠
-Spark UI : http://localhost:8080⁠
+[**Read the full project report (PDF)**](Rapport.pdf)
 
 
