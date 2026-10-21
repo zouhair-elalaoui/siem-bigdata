@@ -134,3 +134,96 @@ Keep this terminal running while generating traffic.
 3. **Terminal 3:** Run `producer.py` to send network traffic to Kafka.
 
 All three terminals should remain open while the pipeline is running.
+
+
+# Execution Guide
+
+## 1. Access MongoDB
+
+### Open the MongoDB shell
+
+Run the following command in your terminal:
+
+```bash
+sudo docker exec -it projet-siem-bigdata-f-mongodb-1 mongo
+```
+
+### Select the SIEM database
+
+Inside the MongoDB shell, execute:
+
+```javascript
+use siem_db
+```
+
+### List available collections
+
+To display the collections in the database:
+
+```javascript
+show collections
+```
+
+### Clear collections (optional)
+
+The following commands delete **all documents** from the specified collections. Use them only when you want to clear the existing data.
+
+```javascript
+db.logs_bruts.deleteMany({})
+db.alertes.deleteMany({})
+```
+
+These commands remove the documents but keep the collections themselves.
+
+To exit the MongoDB shell:
+
+```javascript
+exit
+```
+
+---
+
+## 2. Access Elasticsearch, Kibana, and Spark UI
+
+Once the corresponding services are running, the following interfaces should be available locally:
+
+| Service | URL | Purpose |
+|---|---|---|
+| Elasticsearch | [http://localhost:9200](http://localhost:9200) | Search and index SIEM data |
+| Kibana | [http://localhost:5601](http://localhost:5601) | Visualize alerts and dashboards |
+| Spark UI | [http://localhost:8080](http://localhost:8080) | Monitor Spark jobs and processing |
+
+---
+
+## 3. Configure Kibana and Import Dashboards
+
+### Step 1 — Open Kibana
+
+Navigate to [http://localhost:5601](http://localhost:5601).
+
+### Step 2 — Create a Data View
+
+1. Open **Stack Management**.
+2. Navigate to **Data Views**.
+3. Click **Create data view**.
+4. Configure the following fields:
+
+   - **Name:** `SIEM Alertes`
+   - **Index pattern:** `siem-alertes`
+
+5. Save the data view.
+
+### Step 3 — Import the dashboards
+
+1. Navigate to **Stack Management → Saved Objects**.
+2. Click **Import**.
+3. Select the `Dashboards.ndjson` file from the project.
+4. Complete the import process.
+
+### Step 4 — View the dashboards
+
+Open the **Dashboard** section in Kibana and select the imported dashboard to visualize SIEM alerts.
+
+---
+
+
