@@ -31,19 +31,11 @@ The platform combines distributed stream processing, machine learning, and data 
 5. **Data storage — MongoDB**  
    MongoDB stores raw log data for further investigation and analysis.
 
-## Results and Performance
+## Results
 
-The machine learning models were evaluated using the **UNSW-NB15** dataset.
+Among the four evaluated models, **XGBoost achieved the best overall performance**, with an F1-score of **91.65%** and an ROC-AUC of **98.36%** on the UNSW-NB15 test set. These results highlight its ability to distinguish between normal and malicious network traffic while maintaining a strong balance between precision and recall.
 
-| Metric | Result |
-|---|---:|
-| XGBoost F1-score | 0.9165 |
-| XGBoost ROC-AUC | 0.9836 |
-| XGBoost inference latency | 0.0029 ms/sample |
-| Network flows in the test set | 82,332 |
-| SSH log records | 2,000 |
-
-Among the evaluated models, XGBoost achieved the strongest reported results, with an F1-score of **0.9165** and an ROC-AUC of **0.9836**. These results indicate strong classification performance on the evaluated dataset; they do not, by themselves, guarantee the same performance in a production network environment.
+The model also reported an inference latency of **0.0029 ms per sample**, indicating promising potential for fast network traffic classification.
 
 ## Technology Stack
 
