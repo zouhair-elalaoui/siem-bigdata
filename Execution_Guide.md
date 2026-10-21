@@ -1,4 +1,4 @@
-## Execution
+# Execution Guide
 
 Follow these steps to run the SIEM Big Data project on Ubuntu. Open three terminal windows and keep them running while the pipeline is active.
 
@@ -135,12 +135,11 @@ Keep this terminal running while generating traffic.
 
 All three terminals should remain open while the pipeline is running.
 
+After the execution terminals have finished, you can access the stored data and visualize the results.
 
-# Execution Guide
+### 4. Access MongoDB
 
-## 1. Access MongoDB
-
-### Open the MongoDB shell
+#### Open the MongoDB shell
 
 Run the following command in your terminal:
 
@@ -148,7 +147,7 @@ Run the following command in your terminal:
 sudo docker exec -it projet-siem-bigdata-f-mongodb-1 mongo
 ```
 
-### Select the SIEM database
+#### Select the SIEM database
 
 Inside the MongoDB shell, execute:
 
@@ -156,7 +155,7 @@ Inside the MongoDB shell, execute:
 use siem_db
 ```
 
-### List available collections
+#### List available collections
 
 To display the collections in the database:
 
@@ -164,7 +163,7 @@ To display the collections in the database:
 show collections
 ```
 
-### Clear collections (optional)
+#### Clear collections (optional)
 
 The following commands delete **all documents** from the specified collections. Use them only when you want to clear the existing data.
 
@@ -183,7 +182,7 @@ exit
 
 ---
 
-## 2. Access Elasticsearch, Kibana, and Spark UI
+### 5. Access Elasticsearch, Kibana, and Spark UI
 
 Once the corresponding services are running, the following interfaces should be available locally:
 
@@ -195,13 +194,13 @@ Once the corresponding services are running, the following interfaces should be 
 
 ---
 
-## 3. Configure Kibana and Import Dashboards
+### 6. Configure Kibana and Import Dashboards
 
-### Step 1 — Open Kibana
+#### Step 1 — Open Kibana
 
 Navigate to [http://localhost:5601](http://localhost:5601).
 
-### Step 2 — Create a Data View
+#### Step 2 — Create a Data View
 
 1. Open **Stack Management**.
 2. Navigate to **Data Views**.
@@ -213,14 +212,14 @@ Navigate to [http://localhost:5601](http://localhost:5601).
 
 5. Save the data view.
 
-### Step 3 — Import the dashboards
+#### Step 3 — Import the dashboards
 
 1. Navigate to **Stack Management → Saved Objects**.
 2. Click **Import**.
 3. Select the `Dashboards.ndjson` file from the project.
 4. Complete the import process.
 
-### Step 4 — View the dashboards
+#### Step 4 — View the dashboards
 
 Open the **Dashboard** section in Kibana and select the imported dashboard to visualize SIEM alerts.
 
