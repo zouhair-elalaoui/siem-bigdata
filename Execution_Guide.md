@@ -42,6 +42,7 @@ If `.venv311` already exists, reuse it instead of recreating it.
 Install Docker, Docker Compose, and the required utilities:
 
 ```bash
+uv init
 sudo apt install -y git docker.io docker-compose-v2 util-linux-extra
 sudo systemctl enable --now docker
 sudo usermod -aG docker "$USER"
@@ -77,6 +78,17 @@ python mongodb_config.py
 python data_quality.py --data-dir ./data
 ```
 
+Models Training :
+
+```bash
+python preprocessing.py
+python train_random_forest.py
+python train_isolation_forest.py
+python train_neural_network.py
+python train_xgboost.py
+python evaluate_models.py
+```
+
 Launch the main SIEM pipeline:
 
 ```bash
@@ -86,38 +98,9 @@ python elasticsearch_sender.py
 
 Keep this terminal running.
 
-### 2. Terminal 2 — Real-Time Windowing Analysis
+### 2. Terminal 2 — Network Traffic Producer
 
 Open a second terminal:
-
-```bash
-cd ~/projet-siem-bigdata-F
-source .venv311/bin/activate
-cd spark_ml
-```
-
-Select Java 17 if multiple Java versions are installed, then set the environment variables for this terminal:
-
-```bash
-sudo update-alternatives --config java
-
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-export PATH="$JAVA_HOME/bin:$PATH"
-
-java -version
-```
-
-Run the windowing analysis:
-
-```bash
-python windowing.py
-```
-
-Keep this terminal running.
-
-### 3. Terminal 3 — Network Traffic Producer
-
-Open a third terminal:
 
 ```bash
 cd ~/projet-siem-bigdata-F
@@ -130,8 +113,7 @@ Keep this terminal running while generating traffic.
 ### Execution Order
 
 1. **Terminal 1:** Start Docker services, initialize Kafka/Elasticsearch/MongoDB, check data quality, and launch `elasticsearch_sender.py`.
-2. **Terminal 2:** Launch `windowing.py` for sliding and tumbling window analysis.
-3. **Terminal 3:** Run `producer.py` to send network traffic to Kafka.
+2. **Terminal 2:** Run `producer.py` to send network traffic to Kafka.
 
 All three terminals should remain open while the pipeline is running.
 
