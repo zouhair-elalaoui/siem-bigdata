@@ -37,6 +37,13 @@ Among the four evaluated models, **XGBoost achieved the best overall performance
 
 The model also reported an inference latency of **0.0029 ms per sample**, indicating promising potential for fast network traffic classification.
 
+## Dashboard Preview
+
+The following screenshots illustrate the SIEM monitoring dashboards and alert visualization.
+
+See page 49 of the ["project report"](Rapport.pdf) for the dashboard screenshots and additional details.
+
+
 ## Technology Stack
 
 - **Programming:** Python
